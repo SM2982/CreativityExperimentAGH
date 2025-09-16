@@ -5,21 +5,20 @@ This repository contains the code, data, and analysis for an experimental study 
 ## Repository Structure
 
 - `analysis/` - Contains all analysis scripts, data, and outputs
-  - `Code/` - Analysis scripts and code
-    - `Analysis_Study.Rmd` - Main R Markdown analysis file  
-    - `refined_idea_similarity_analysis.py` - Python script for OpenAI embedding-based diversity calculations
-  - `Data/` - Raw and processed data files
+  - `analysisR/` - R analysis
+    - `Analysis_Study.Rmd` - Main R Markdown analysis file
+  - `embeddings/` - Python scripts for embedding-based diversity calculations
+    - `refined_idea_similarity_analysis.py` - Main Python script
+    - `improved_embedding_storage.py` - Efficient storage/load utilities
+  - `data/` - Raw and processed data files
     - `data_clean.csv` - Cleaned experimental data
-    - `data_merged.csv` - Raw merged data from all participants
     - `Elaboration_analysis.csv` - Coded elaboration depth data
-    - `ideas_with_diversity_scores_embeddings.npz` - Embeddings for diversity calculations
-  - `Figures/` - Generated visualizations and plots
-- `backend/` - Backend configuration files
-  - `.env.example` - Example environment file (template for API keys)
-  - `.env` - Environment variables (API keys, configuration) - *create from example*
-- `requirements.txt` - Python dependencies for diversity analysis
-- `Rater Documents/` - Documentation for human raters
-  - Coding schemes and rater instructions
+    - Outputs (generated): `ideas_with_diversity_scores.csv`, `ideas_with_diversity_scores_embeddings.npz`, metadata JSON
+  - `figures/` - Generated visualizations and plots (created by R)
+  - `env/` - Environment files (create `.env` here with `OPENAI_API_KEY=`)
+  - `requirements.txt` - Python dependencies for diversity analysis
+- `README.md` - This document
+- `analysis/rater/` - Documentation for human raters (coding schemes and instructions)
 
 ## Study Design
 
@@ -82,17 +81,17 @@ Before running the R analysis, you need to set up the Python environment for sem
    ```
 
 2. **Set up OpenAI API access:**
-   - Copy the example environment file:
+   - Create an env file for analysis:
      ```bash
-     cp backend/.env.example backend/.env
+     mkdir -p analysis/env
+     printf "OPENAI_API_KEY=your_api_key_here\n" > analysis/env/.env
      ```
-   - Edit `backend/.env` and replace `your_openai_api_key_here` with your actual API key
    - Get an API key from [OpenAI's platform](https://platform.openai.com/api-keys)
    - **Important:** Never commit your actual `.env` file to version control
 
 3. **Run the Python diversity analysis:**
    ```bash
-   cd analysis/Code/
+   cd analysis/embeddings
    python refined_idea_similarity_analysis.py
    ```
    
@@ -108,7 +107,7 @@ Before running the R analysis, you need to set up the Python environment for sem
 After completing the Python setup, run the main R analysis:
 
 1. **Open RStudio**
-2. **Open the main analysis file** (`analysis/Code/Analysis_Study.Rmd`)
+2. **Open the main analysis file** (`analysis/analysisR/Analysis_Study.Rmd`)
 3. **Run the entire analysis using RStudio's interface:**
    - **Method 1 (Recommended):** Click the "Run" dropdown menu in the toolbar → Select "Run All"
    - **Method 2:** In the R Markdown document, click the "Run" dropdown → Select "Run All Chunks Below"
@@ -145,7 +144,6 @@ The R analysis will:
 - Violin plots for main dependent variables
 - Spider/radar charts for UX measures
 - Before-after plots for within-subject changes
-- Marginal effects plots for interaction analyses
 
 ### Exploratory Analyses
 - Elaboration depth analysis using H-IDEA coding scheme
@@ -155,11 +153,12 @@ The R analysis will:
 
 ## Results
 
-Key findings and visualizations are automatically generated in the `analysis/Figures/` directory:
+Key findings and visualizations are automatically generated in the `analysis/figures/` directory (selection):
 - `violin_refinedSim_ideaQuality_ownership_by_condition.png` - Main outcome measures
+- `violin_cognitive_workload_by_condition.png` - Cognitive workload by condition
 - `ux_measures_spider_chart.png` - User experience radar chart
 - `within_subject_change_publication.png` - Before-after analysis
-- `marginal_effects_regression.png` - Interaction effects
+- Publication-ready bar plots (e.g., `bar_creative_self_efficacy_publication.png`)
 
 
 ## Data Privacy & Ethics
