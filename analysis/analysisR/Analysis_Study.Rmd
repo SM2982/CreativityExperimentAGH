@@ -785,9 +785,6 @@ p_within_subject <- ggplot(before_after_data, aes(x = timepoint, y = diversity, 
 print(p_within_subject)
 
 # Save with bigger dimensions to make individual panels larger
-ggsave(fig_path("within_subject_change_publication.png"), p_within_subject, 
-       width = 12, height = 4.5, dpi = 600, bg = "white")
-
 # Also save as PDF for LaTeX
 ggsave(fig_path("within_subject_change_publication.pdf"), p_within_subject, 
        width = 12, height = 4.5, device = "pdf", bg = "white")
@@ -867,11 +864,6 @@ print(p_violin)
 
 # Save violin plots
 dir.create(here::here("Analysis", "Figures"), showWarnings = FALSE, recursive = TRUE)
-ggsave(
-  filename = here::here("Analysis", "Figures", "violin_refinedSim_ideaQuality_ownership_by_condition.png"),
-  plot = p_violin, width = 12, height = 4.5, dpi = 300, bg = "white"
-)
-
 # Also save as PDF (vector graphics)
 ggsave(
   filename = here::here("Analysis", "Figures", "violin_refinedSim_ideaQuality_ownership_by_condition.pdf"),
@@ -999,19 +991,11 @@ dir.create(here::here("Analysis", "Figures"), showWarnings = FALSE, recursive = 
 
 # Save violin plots
 ggplot2::ggsave(
-  filename = here::here("Analysis", "Figures", "violin_cognitive_workload_by_condition.png"),
-  plot = p_tlx_violin, width = 7, height = 4.5, dpi = 300, bg = "white"
-)
-ggplot2::ggsave(
   filename = here::here("Analysis", "Figures", "violin_cognitive_workload_by_condition.pdf"),
   plot = p_tlx_violin, width = 7, height = 4.5, device = "pdf", bg = "white", useDingbats = FALSE
 )
 
 # Save bar charts (ACM/CHI publication quality)
-ggplot2::ggsave(
-  filename = here::here("Analysis", "Figures", "bar_cognitive_workload_creativeSE_by_condition.png"),
-  plot = combined_bar_plot, width = 7, height = 3.5, dpi = 600, bg = "white", units = "in"
-)
 ggplot2::ggsave(
   filename = here::here("Analysis", "Figures", "bar_cognitive_workload_creativeSE_by_condition.pdf"),
   plot = combined_bar_plot, width = 7, height = 3.5, device = "pdf", bg = "white", 
@@ -1188,10 +1172,7 @@ print(present_bot_types)
 print("UX Legend labels:")
 print(ux_bot_labels)
 
-# Create the UX spider/radar chart - CHI publication ready
-png(fig_path("ux_measures_spider_chart.png"), width = 10, height = 8, units = "in", res = 300)
-
-# Set up the plot area with professional margins for publication
+# Set up the plot area
 par(mar = c(2, 2, 2, 2), mfrow = c(1, 1))
 
 # Create radar chart with CHI publication styling
@@ -1240,9 +1221,7 @@ legend(
   title.cex = 1.0
 )
 
-dev.off()
-
-# Also create PDF version for CHI publication (vector graphics for LaTeX)
+# Also create PDF version  (vector graphics for LaTeX)
 pdf(fig_path("ux_measures_spider_chart.pdf"), width = 10, height = 8, useDingbats = FALSE)
 
 par(mar = c(2, 2, 2, 2), mfrow = c(1, 1))
