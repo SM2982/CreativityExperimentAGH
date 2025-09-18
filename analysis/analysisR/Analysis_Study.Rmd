@@ -259,15 +259,7 @@ alpha_CreativeSelfEfficacy <- psych::alpha(CreativeSelfEfficacy, check.keys = TR
 print(alpha_CreativeSelfEfficacy)
 ```
 
-# Perceived Technology Agency
-```{r}
-PerceivedTechnologyAgency <- data_clean %>%
-  dplyr::select(., c(pta1, pta2, pta3, pta4, pta5))
-alpha_PerceivedTechnologyAgency <- psych::alpha(PerceivedTechnologyAgency, check.keys = TRUE)
-print(alpha_PerceivedTechnologyAgency)
-```
-
-# NASA-TLX
+# Perceived Cognitive Workload
 ```{r}
 NASATLX <- data_clean %>%
   dplyr::select(., c(tlx1, tlx2))
@@ -301,14 +293,6 @@ alpha_HedonicMotivation <- psych::alpha(HedonicMotivation, check.keys = TRUE)
 print(alpha_HedonicMotivation)
 ```
 
-# Propensity to Trust Technology
-```{r}
-PropensityTrustTechnology <- data_clean %>%
-  dplyr::select(., c(ptt1, ptt2_rev, ptt3, ptt4, ptt5, ptt6))
-alpha_PropensityTrustTechnology <- psych::alpha(PropensityTrustTechnology, check.keys = TRUE)
-print(alpha_PropensityTrustTechnology)
-```
-
 # Perceived Ownership
 ```{r}
 PerceivedOwnership <- data_clean %>%
@@ -321,19 +305,16 @@ print(alpha_PerceivedOwnership)
 ```{r}
 # Cronbach's alpha for multi-item scales (excluding 2-item NASA-TLX)
 reliability_summary <- data.frame(
-  Scale = c("Creative Self-Efficacy", "Perceived Technology Agency",
+  Scale = c(
            "Performance Expectancy", "Effort Expectancy", "Hedonic Motivation",
-           "Propensity to Trust Technology", "Perceived Ownership"),
+            "Perceived Ownership"),
   Cronbachs_Alpha = c(
-    alpha_CreativeSelfEfficacy$total$raw_alpha,
-    alpha_PerceivedTechnologyAgency$total$raw_alpha,
     alpha_PerformanceExpectancy$total$raw_alpha,
     alpha_EffortExpectancy$total$raw_alpha,
     alpha_HedonicMotivation$total$raw_alpha,
-    alpha_PropensityTrustTechnology$total$raw_alpha,
     alpha_PerceivedOwnership$total$raw_alpha
   ),
-  Items = c(3, 5, 3, 4, 3, 6, 5)
+  Items = c(3, 4, 3, 5)
 )
 
 knitr::kable(reliability_summary, digits = 3, caption = "Cronbach's Alpha for Multi-item Scales")
@@ -364,6 +345,8 @@ rater_data <- data.frame(
 # Calculate ICC
 icc_result <- ICC(rater_data)
 print(icc_result)
+
+#ICC3,k relevant in our context
 ```
 
 #H1: Idea quality significantly improves when participants interact with (a) a suggestion model LLM, (b) a question model LLM, (c) a model-led LLM or (d) a vanilla LLM compared to a control condition without LLM support.
@@ -683,6 +666,7 @@ m1 <- lmerTest::lmer(
   REML = FALSE
 )
 summary(m1)
+confint(m1, level = 0.95, method = "Wald")
 anova(m1)
 
 emm_time_by_bot <- emmeans(m1, ~ time | bot_type)
